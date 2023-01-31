@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>はじめてのVue.js</title>
+    <script src="https://unpkg.com/vue@2.5.17"></script>
+    <style>
+        .header h1 {
+            width: 100%;
+            height: 30px;
+            background-color: #f1f1f1;
+            border: 1px solid #d3d3d3;
+            padding: 30px 15px;
+            margin: 0;
+        }
+        .content ul {
+            padding: 0;
+            margin: 0;
+        }
+        .content li {
+            width: 100%;
+            height: 30px;
+            padding: 30px 15px;
+            background-color: #fff;
+            border: 1px solid #d3d3d3;
+            text-align: left;
+            list-style-type: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="vm">
+        <fruits-list-title>
+            <h1 slot="fruits">秋の果物</h1>
+        </fruits-list-title>
+        <fruits-list-name>
+            <ul slot="fruits-list">
+                <li>バナナ</li>
+                <li>夏みかん</li>
+            </ul>
+        </fruits-list-name>
+    </div>
+    </script>
+    <script>
+        Vue.component('fruits-list-title', {
+            template: `
+                <div>
+                    <slot name="fruits">No title</slot>
+                </div>
+            `
+        })
+        Vue.component('fruits-list-name', {
+            template: `
+                <div>
+                    <slot name="fruits-list">No content</slot>
+                </div>
+            `
+        })
+        let vm = new Vue({
+            el: '#vm',
+        })
+    </script>
+</body>
+</html>
