@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue.js transitionアニメーション</title>
+    <script src="https://unpkg.com/vue@2.5.17"></script>
+</head>
+<body>
+    <div id="vm">
+        <my-button href="https://vuejs.org">anchor</my-button>
+        <my-button tag="span">span</my-button>
+        <my-button>button</my-button>
+    </div>
+    <script>
+        let MyButton = {
+            props: ['href', 'tag'],
+            render: function(createElement) {
+                let tag = this.tag || (this.href ? 'a' : 'button')
+                return createElement(tag, {
+                    attrs: {
+                        href: this.href || '#'
+                    }
+                }, this.$slots.default)
+            }
+            // template: `
+            //     <a v-if="(!tag && href) || tag === 'a'" :href="href || '#'">
+            //         <slot></slot>
+            //     </a>
+            //     <span v-else-if="tag === 'span'">
+            //         <slot></slot>
+            //     </span>
+            //     <button v-else>
+            //         <slot></slot>
+            //     </button>
+            // `
+        }
+        let vm = new Vue({
+            el: '#vm',
+            components: {
+                MyButton: MyButton
+            }
+        })
+    </script>
+</body>
+</html>
