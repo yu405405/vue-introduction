@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue.js transitionアニメーション</title>
+    <script src="https://unpkg.com/vue@2.5.17"></script>
+</head>
+<body>
+    <div id="vm">
+        <img v-fallback-image.once="noImageURL" src="./logo.png" :alt="altText">
+    </div>
+    <script>
+        Vue.directive('fallback-image', {
+            bind: function(el, binding) {
+                console.log('bind, binding')
+                let once = binding.modifiers.once;
+                el.addEventListener('error', function onError() {
+                    el.src = binding.value;
+                    if(once) {
+                        el.removeEventListener('error', onError)
+                    }
+                })
+            },
+            update: function(el, binding) {
+                console.log('update', binding)
+                if(binding.oldValue !== binding.value && binding.oldValue === el.src) {
+                    el.src = binding.value
+                }
+            }
+        })
+        let vm = new Vue({
+            el: '#vm',
+            data() {
+                return {
+                    altText: 'logo',
+                    noImageURL: 'http://placehold.jp/150x150.png'
+                }
+            }
+        })
+    </script>
+</body>
+</html>

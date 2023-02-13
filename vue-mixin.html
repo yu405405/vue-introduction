@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue.js transitionアニメーション</title>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.6/css/all.css">
+    <script src="https://unpkg.com/vue@2.5.17"></script>
+</head>
+<body>
+    <div id="vm">
+        <icon-share-button></icon-share-button>
+        <text-share-button></text-share-button>
+    </div>
+    <script>
+        let Sharable = {
+            data() {
+                return {
+                    _isProcessing: false
+                }
+            },
+            created: function() {
+                console.log('Sharableミックスインのフックが呼ばれました')
+            },
+            methods: {
+                share: function() {
+                    if(this._isProcessing) {
+                        return
+                    }
+                    if(!window.confirm('シェアしますか？')) {
+                        return
+                    }
+                    this._isProcessing = true
+                    setTimeout(function() {
+                        window.alert('シェアしました。')
+                        this._isProcessing = false
+                    }, 300)
+                }
+            }
+        }
+        let IconShareButton = {
+            template: `
+                <button v-on:click="share"><i class="fas fa-share-square"></i></button>
+            `,
+            mixins: [Sharable],
+        }
+        let TextShareButton = {
+            template: `
+                <button v-on:click="share">{{buttonLabel}}</button>
+            `,
+            mixins: [Sharable],
+            data() {
+                return {
+                    buttonLabel: 'シェアする',
+                }
+            },
+            methods: {
+                share: function() {
+                    window.alert('コンポーネントからシェアしました。')
+                }
+            }
+        }
+        let vm = new Vue({
+            el: '#vm',
+            components: {
+                IconShareButton,
+                TextShareButton
+            }
+        })
+    </script>
+</body>
+</html>

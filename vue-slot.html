@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue.js transitionアニメーション</title>
+    <script src="https://unpkg.com/vue@2.5.17"></script>
+</head>
+<body>
+    <div id="vm">
+        <todo-list v-bind:todos="todos">
+            <li slot-scope="{todo}" v-if="todo.isCompleted">
+                {{todo.text}}
+            </li>
+        </todo-list>
+    </div>
+    <script>
+        let ToDoList = {
+            template: `
+                <ul>
+                    <template v-for="todo in todos">
+                        <slot v-bind:todo="todo">
+                            <li v-bind:key="todo.id">
+                                {{todo.text}}
+                            </li>
+                        </slot>
+                    </template>
+                </ul>
+            `,
+            props: {
+                todos: {
+                    type: Array,
+                    required: true
+                }
+            }
+        }
+        let vm = new Vue({
+            el: '#vm',
+            data() {
+                return {
+                    todos: [
+                        {id: 1, text: 'C++', isCompleted: true},
+                        {id: 2, text: 'JavaScript', isCompleted: false},
+                        {id: 3, text: 'Java', isCompleted: true},
+                        {id: 4, text: 'Perl', isCompleted: false},
+                    ]
+                }
+            },
+            components: {
+                ToDoList: ToDoList
+            }
+        })
+    </script>
+</body>
+</html>
