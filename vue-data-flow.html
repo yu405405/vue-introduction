@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue.js データフローの設計</title>
+    <script src="https://unpkg.com/vue@2.5.17"></script>
+</head>
+<body>
+    <div id="vm">
+
+    </div>
+
+    <script>
+        const store = {
+            state: {
+                count: 0
+            },
+            increment() {
+                this.state.count += 1
+            }
+        }
+        let vm = new Vue({
+            el: '#vm',
+            template: `
+                <div>
+                    <p>{{count}}</p>
+                    <button @click="increment">+</button>
+                </div>
+            `,
+            data: store.state,
+            methods: {
+                increment() {
+                    store.increment()
+                }
+            }
+        })
+    </script>
+</body>
+</html>
