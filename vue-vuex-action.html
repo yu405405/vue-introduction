@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue.js データフローの設計</title>
+    <script src="https://unpkg.com/vue@2.5.17"></script>
+    <script src="https://unpkg.com/vuex@3.0.1"></script>
+</head>
+<body>
+    <div id="vm">
+
+    </div>
+
+    <script>
+        function getCountNum(type) {
+            return new Promise(function(resolve) {
+                setTimeout(function() {
+                    let amount;
+                    switch(type) {
+                        case 'one':
+                            amount = 1
+                            break
+                        case 'two':
+                            amount = 2
+                            break
+                        case 'ten':
+                            amount = 10
+                            break
+                        default:
+                            amount = 0
+                    }
+                    resolve({amount})
+                }, 1000)
+            })
+        }
+
+        const store = new Vuex.Store({
+            state: {
+                count: 10
+            },
+            mutations: {
+                increment(state, payload) {
+                    state.count += payload.amount
+                }
+            },
+            actions: {
+                incrementAsync({commit}, payload) {
+                    return getCountNum(payload.type)
+                        .then(function(data) {
+                            console.log(data)
+                            commit('increment', {
+                                amount: data.amount
+                            })
+                        })
+                }
+            }
+        })
+
+        console.log(store.state.count)
+        store.dispatch('incrementAsync', {type: 'one'})
+            .then(function() {
+                console.log(store.state.count)
+            })
+
+        let vm = new Vue({
+            el: '#vm',
+            data() {
+                return {
+
+                }
+            }
+        })
+    </script>
+</body>
+</html>

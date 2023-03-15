@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue.js データフローの設計</title>
+    <script src="https://unpkg.com/vue@2.5.17"></script>
+    <script src="https://unpkg.com/vuex@3.0.1"></script>
+</head>
+<body>
+    <div id="vm">
+
+    </div>
+
+    <script>
+        const store = new Vuex.Store({
+            state: {
+                count: 10
+            },
+            mutations: {
+                incrementAsync: function(state) {
+                    setTimeout(function(){
+                        state.count = state.count + 1
+                    }, 3000)
+                },
+                increment(state) {
+                    state.count = state.count + 1
+                }
+            }
+        })
+        store.commit('increment')
+        console.log(store.state.count, 'incrementの実行（1回目）')
+        store.commit('incrementAsync')
+        console.log(store.state.count, 'incrementAsyncの実行')
+        store.commit('increment')
+        console.log(store.state.count, 'incrementの実行（2回目）')
+
+        let vm = new Vue({
+            el: '#vm',
+            data() {
+                return {
+
+                }
+            }
+        })
+    </script>
+</body>
+</html>
